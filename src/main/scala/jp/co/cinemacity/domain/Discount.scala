@@ -1,17 +1,11 @@
 package jp.co.cinemacity.domain
 
-trait Discount
 
+/*
+  割引を提供する何か。
+  チケット種や上映回ごとに割り引ける額が決まっている。
+ */
 object Discount {
-  def of(customer: Customer): Seq[DiscountPricing] = {
-    def check: PartialFunction[Benefit, DiscountPricing] = {
-      case Benefit.GlassesFor3D =>
-        NotBorrowingGlassesFor3D
-    }
-
-    customer.benefits.toSeq.flatMap(check.lift)
-  }
-
   case object NotBorrowingGlassesFor3D extends DiscountPricing {
 
     override def isDefinedAt(ticket: Ticket): Boolean = ticket.show.typ == ShowType.ThreeD && !ticket.typ.isInstanceOf[NonDiscountableTicketType]
@@ -21,5 +15,5 @@ object Discount {
 }
 
 object DiscountPricing {
-  lazy val nodiscount: DiscountPricing = {case _ => Price(0)}
+  lazy val noDiscount: DiscountPricing = {case _ => Price(0)}
 }
