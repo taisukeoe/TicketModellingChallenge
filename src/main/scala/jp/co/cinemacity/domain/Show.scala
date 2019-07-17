@@ -14,7 +14,7 @@ case class MovieId(private val value: Long) extends AnyVal
  */
 case class Show(id: ShowId, movie: Movie, typ: ShowType, at: LocalDateTime) {
   lazy val time: TimeType = if (at.getHour <= 20) TimeType.Late else TimeType.Daytime
-  lazy val date: DateType = ???
+  lazy val date: DateType = ??? //TODO: 土日祝日と日付の判定
 }
 
 case class ShowId(private val value: Long) extends AnyVal

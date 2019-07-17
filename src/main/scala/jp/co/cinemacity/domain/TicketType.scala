@@ -23,7 +23,7 @@ object TicketType {
 
   case object CinemaCitizen extends TicketType
 
-  case object CinemaCitizenAged extends TicketType
+  case object CinemaCitizenSenior extends TicketType
 
   case object UniversityStudent extends TicketType
 

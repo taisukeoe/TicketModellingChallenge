@@ -51,7 +51,7 @@ object WeekdayPricing extends TicketPricing {
     case ticket =>
       (ticket, time) match {
         case (CinemaCitizen, _) => Price(1000)
-        case (CinemaCitizenAged, _) => Price(1000)
+        case (CinemaCitizenSenior, _) => Price(1000)
         case (Regular, Daytime) => Price(1800)
         case (Regular, Late) => Price(1300)
         case (Senior, _) => Price(1100)
@@ -79,7 +79,7 @@ object HolidayPricing extends TicketPricing {
       (ticket, time) match {
         case (CinemaCitizen, Daytime) => Price(1300)
         case (CinemaCitizen, Late) => Price(1000)
-        case (CinemaCitizenAged, _) => Price(1000)
+        case (CinemaCitizenSenior, _) => Price(1000)
         case (Regular, Daytime) => Price(1800)
         case (Regular, Late) => Price(1300)
         case (Senior, _) => Price(1100)
@@ -104,7 +104,7 @@ object MoviedayPricing extends TicketPricing {
 
   override def apply(time: TimeType): PartialFunction[TicketType, Price] = {
     case Regular | CinemaCitizen | Senior | UniversityStudent => Price(1100)
-    case CinemaCitizenAged | Student | Child | Disabled => Price(1000)
+    case CinemaCitizenSenior | Student | Child | Disabled => Price(1000)
     case DisabledStudent => Price(900)
   }
 }
