@@ -17,7 +17,7 @@ case class MovieId(private val value: Long) extends AnyVal
   上映回。
  */
 case class Show(id: ShowId, movie: Movie, typ: ShowType, at: LocalDateTime) {
-  lazy val time: TimeType = if (at.getHour <= 20) TimeType.Late else TimeType.Daytime
+  lazy val time: TimeType = if (at.getHour <= 20) TimeType.Daytime else TimeType.Late
   lazy val date: DateType = (at.getDayOfWeek, at) match {
     case (DayOfWeek.SATURDAY | DayOfWeek.SUNDAY, _) => if (at.getDayOfMonth == 1) DateType.MovieDay(DateType.Holiday) else DateType.Holiday
     case (_, Holidays(_)) => if (at.getDayOfMonth == 1) DateType.MovieDay(DateType.Holiday) else DateType.Holiday

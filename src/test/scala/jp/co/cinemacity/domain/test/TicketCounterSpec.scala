@@ -2,8 +2,7 @@ package jp.co.cinemacity.domain.test
 
 import java.time.LocalDateTime
 
-import jp.co.cinemacity.domain.Benefit.CinemaCitizenID
-import jp.co.cinemacity.domain.TicketType.CinemaCitizen
+import jp.co.cinemacity.domain.Benefit.{CinemaCitizenID, GlassesFor3D}
 import jp.co.cinemacity.domain._
 import org.scalatest.FlatSpec
 
@@ -41,7 +40,7 @@ class TicketCounterSpec extends FlatSpec {
 
   it should "sell weekday ticket to CineCitizen what if it's movie day" in {
 
-    val customer = Customer(Set(CinemaCitizenID))
+    val customer = Customer(Set(CinemaCitizenID, GlassesFor3D))
 
     val ticketTypes = concierge.validate(customer)
 
@@ -51,12 +50,30 @@ class TicketCounterSpec extends FlatSpec {
 
     val tickets = ticketTypes.map(vendor.issue(show, _))
 
-    assert(tickets.exists(_.listPrice == Price(1000)))
+    assert(tickets.exists(_.listPrice == Price(1000)),tickets)
 
-    assert(tickets.exists(_.listPrice == Price(1100)))
+    assert(tickets.exists(_.listPrice == Price(1100)),tickets)
 
     val price = counter.sell(customer, show)
 
     assert(price == Price(1000))
+  }
+
+  it should "sell 3D ticket with glasses discount" in {
+    val customer = Customer(Set(CinemaCitizenID, GlassesFor3D))
+
+    val ticketTypes = concierge.validate(customer)
+
+    assert(ticketTypes.contains(TicketType.CinemaCitizen))
+
+    val show = Show(ShowId(11L), movie, ShowType.ThreeD, LocalDateTime.of(2019, 7, 6, 23, 0))
+
+    val tickets = ticketTypes.map(vendor.issue(show, _))
+
+    assert(tickets.exists(_.listPrice == Price(1400)), tickets)
+
+    val price = counter.sell(customer, show)
+
+    assert(price == Price(1300))
   }
 }
