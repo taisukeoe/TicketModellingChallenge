@@ -19,7 +19,7 @@ object CinemaCityTicketConcierge extends TicketConcierge {
   def validate(customer: Customer): Set[TicketType] = {
     def check(benefit: Benefit): TicketType = benefit match {
       case Benefit.CinemaCitizenID =>
-        if(customer.has{case Benefit.ID(age) => age >= Age(60)})
+        if(customer.has{case Benefit.ID(age) if age >= Age(60) => true})
           CinemaCitizenSenior
         else
           CinemaCitizen

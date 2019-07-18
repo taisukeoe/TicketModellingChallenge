@@ -6,7 +6,7 @@ package jp.co.cinemacity.domain
   映画館に足を運んで購入する人を想定しているため、IDはない。
  */
 case class Customer(benefits: Set[Benefit]) {
-  def has(benefit: PartialFunction[Benefit, Boolean]): Boolean = benefits.exists(benefit)
+  def has(benefit: PartialFunction[Benefit, Boolean]): Boolean = benefits.exists(b => benefit.isDefinedAt(b) && benefit(b))
 }
 
 /*
