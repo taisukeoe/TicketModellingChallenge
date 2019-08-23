@@ -5,39 +5,78 @@ package jp.co.cinemacity.domain
   チケット購入者。
   映画館に足を運んで購入する人を想定しているため、IDはない。
  */
-case class Customer(benefits: Set[Benefit]) {
-  def has(benefit: PartialFunction[Benefit, Boolean]): Boolean = benefits.exists(b => benefit.isDefinedAt(b) && benefit(b))
+case class Customer(private val personality: Personality, private val benefits: Set[Benefit], discounts: Set[Discount] ) {
+  def availableTicketTypes: Set[TicketType] = benefits.map(_.ticketTypeOf(personality)) + personality.ticketType
 }
 
 /*
   チケット購入者が提示する特典。
   能動的に提示するもの（IDなど）の他、自然と見て判断されるもの（幼児か否か）や、自己申告特典（障がい者の同伴者）も含まれる。
  */
-sealed trait Benefit
+sealed trait Benefit {
+  def ticketTypeOf(personality: Personality): TicketType
+}
 
 object Benefit {
 
-  case class ID(age: Age) extends Benefit
+  import Personality._
+  import TicketType._
 
-  case object CinemaCitizenID extends Benefit
+  case object CinemaCitizenID extends Benefit {
+    override def ticketTypeOf(personality: Personality): TicketType = personality match {
+      case Adult(age) if age >= Age(60) =>
+        CinemaCitizenSenior
+      case _ =>
+        CinemaCitizen
+    }
+  }
 
-  case object MiCard extends Benefit
+  case object MiCard extends Benefit {
+    override def ticketTypeOf(personality: Personality): TicketType = MiCardHolder
+  }
 
-  case object ParkingAreaPark80 extends Benefit
+  case object ParkingAreaPark80 extends Benefit {
+    override def ticketTypeOf(personality: Personality): TicketType = ParkingAreaPark80Holder
+  }
 
-  case object UniversityStudentID extends Benefit
+  case object DisabilityHandbook extends Benefit {
+    override def ticketTypeOf(personality: Personality): TicketType = personality match {
+      case Personality.Child | Personality.Student => DisabledStudent
+      case _ => Disabled
+    }
+  }
 
-  case object StudentHandbook extends Benefit
+  case object AccompanyOfDisabled extends Benefit {
+    override def ticketTypeOf(personality: Personality): TicketType = DisabilityHandbook.ticketTypeOf(personality)
+  }
 
-  case object DisabilityHandbook extends Benefit
+}
 
-  case object AccompanyOfDisabled extends Benefit
+sealed trait Personality {
+  def ticketType: TicketType
+}
 
-  case object GlassesFor3D extends Benefit
+object Personality {
 
-  case object Child extends Benefit
+  case class Adult(age: Age) extends Personality {
+    override def ticketType: TicketType = if(age >= Age(70)) TicketType.Senior else TicketType.Regular
+  }
 
-  case object Baby extends Benefit
+  case object Child extends Personality {
+    def ticketType: TicketType = TicketType.Child
+  }
+
+  case object Baby extends Personality {
+    def ticketType: TicketType = TicketType.Baby
+  }
+
+  case object Student extends Personality {
+    override def ticketType: TicketType = TicketType.Student
+  }
+
+  case object UniversityStudent extends Personality {
+    override def ticketType: TicketType = TicketType.UniversityStudent
+  }
 
 }
 

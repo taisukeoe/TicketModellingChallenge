@@ -2,7 +2,8 @@ package jp.co.cinemacity.domain.test
 
 import java.time.LocalDateTime
 
-import jp.co.cinemacity.domain.Benefit.{CinemaCitizenID, GlassesFor3D}
+import jp.co.cinemacity.domain.Benefit.CinemaCitizenID
+import jp.co.cinemacity.domain.Discount.NotBorrowingGlassesFor3D
 import jp.co.cinemacity.domain._
 import org.scalatest.FlatSpec
 
@@ -10,15 +11,15 @@ import org.scalatest.FlatSpec
 class TicketCounterSpec extends FlatSpec {
 
   lazy val vendor: TicketVendor = CinemaCityTicketVendor
-  lazy val concierge: TicketConcierge = CinemaCityTicketConcierge
-  lazy val counter = new TicketCounter(vendor, concierge)
+//  lazy val concierge: TicketConcierge = CinemaCityTicketConcierge
+  lazy val counter = new TicketCounter(vendor)
   lazy val movie = Movie(MovieId(1L), "スパイダーマン")
 
   "TicketCounter" should "sell a cheaper ticket" in {
 
-    val customer = Customer(Set(Benefit.StudentHandbook, Benefit.DisabilityHandbook))
+    val customer = Customer(Personality.Student, Set(Benefit.DisabilityHandbook), Set.empty)
 
-    val ticketTypes = concierge.validate(customer)
+    val ticketTypes = customer.availableTicketTypes
 
     assert(ticketTypes.contains(TicketType.Student))
 
@@ -40,9 +41,9 @@ class TicketCounterSpec extends FlatSpec {
 
   it should "sell weekday ticket to CineCitizen what if it's movie day" in {
 
-    val customer = Customer(Set(CinemaCitizenID, GlassesFor3D))
+    val customer = Customer(Personality.Adult(Age(20)), Set(CinemaCitizenID), Set(NotBorrowingGlassesFor3D))
 
-    val ticketTypes = concierge.validate(customer)
+    val ticketTypes = customer.availableTicketTypes
 
     assert(ticketTypes.contains(TicketType.CinemaCitizen))
 
@@ -60,9 +61,9 @@ class TicketCounterSpec extends FlatSpec {
   }
 
   it should "sell 3D ticket with glasses discount" in {
-    val customer = Customer(Set(CinemaCitizenID, GlassesFor3D))
+    val customer = Customer(Personality.Adult(Age(20)), Set(CinemaCitizenID), Set(NotBorrowingGlassesFor3D))
 
-    val ticketTypes = concierge.validate(customer)
+    val ticketTypes = customer.availableTicketTypes
 
     assert(ticketTypes.contains(TicketType.CinemaCitizen))
 
