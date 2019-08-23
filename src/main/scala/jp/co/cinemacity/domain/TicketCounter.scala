@@ -11,7 +11,7 @@ class TicketCounter(vendor: TicketVendor) {
 
     val tickets = ticketTypes.map(vendor.issue(show, _))
 
-    tickets.map(t => t.copy( price = discounts.foldLeft(t.price)((price, disc) => price - disc.applyOrElse(t, DiscountPricing.noDiscount)))).minBy(_.price)
+    tickets.map(t => t.copy( price = discounts.foldLeft(t.price)((price, disc) => price - disc.pricing.applyOrElse(t, DiscountPricing.noDiscount)))).minBy(_.price)
   }
 }
 

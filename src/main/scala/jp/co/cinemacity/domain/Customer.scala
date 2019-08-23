@@ -5,7 +5,7 @@ package jp.co.cinemacity.domain
   チケット購入者。
   映画館に足を運んで購入する人を想定しているため、IDはない。
  */
-case class Customer(private val personality: Personality, private val benefits: Set[Benefit], discounts: Set[DiscountPricing] ) {
+case class Customer(private val personality: Personality, private val benefits: Set[Benefit], discounts: Set[Discount] ) {
   def availableTicketTypes: Set[TicketType] = benefits.map(_.ticketTypeOf(personality)) + personality.ticketType
 }
 
