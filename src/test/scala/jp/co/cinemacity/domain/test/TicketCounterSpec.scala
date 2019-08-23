@@ -28,13 +28,13 @@ class TicketCounterSpec extends FlatSpec {
 
     val tickets = ticketTypes.map(vendor.issue(show, _))
 
-    assert(tickets.exists(_.listPrice == Price(1000)))
+    assert(tickets.exists(_.price == Price(1000)))
 
-    assert(tickets.exists(_.listPrice == Price(900)))
+    assert(tickets.exists(_.price == Price(900)))
 
-    val price = counter.sell(customer, show)
+    val ticket = counter.sell(customer, show)
 
-    assert(price == Price(900))
+    assert(ticket.price == Price(900))
   }
 
 
@@ -50,13 +50,13 @@ class TicketCounterSpec extends FlatSpec {
 
     val tickets = ticketTypes.map(vendor.issue(show, _))
 
-    assert(tickets.exists(_.listPrice == Price(1000)),tickets)
+    assert(tickets.exists(_.price == Price(1000)),tickets)
 
-    assert(tickets.exists(_.listPrice == Price(1100)),tickets)
+    assert(tickets.exists(_.price == Price(1100)),tickets)
 
-    val price = counter.sell(customer, show)
+    val ticket = counter.sell(customer, show)
 
-    assert(price == Price(1000))
+    assert(ticket.price == Price(1000))
   }
 
   it should "sell 3D ticket with glasses discount" in {
@@ -70,10 +70,10 @@ class TicketCounterSpec extends FlatSpec {
 
     val tickets = ticketTypes.map(vendor.issue(show, _))
 
-    assert(tickets.exists(_.listPrice == Price(1400)), tickets)
+    assert(tickets.exists(_.price == Price(1400)), tickets)
 
-    val price = counter.sell(customer, show)
+    val ticket = counter.sell(customer, show)
 
-    assert(price == Price(1300))
+    assert(ticket.price == Price(1300))
   }
 }
