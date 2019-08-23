@@ -2,9 +2,7 @@ package jp.co.cinemacity.domain
 
 import java.time.{DayOfWeek, LocalDateTime}
 
-import jp.co.cinemacity.domain.DateType.Holiday
 import jp.t2v.util.locale.Holidays
-import jp.t2v.util.locale.Implicits._
 
 /*
   映画。

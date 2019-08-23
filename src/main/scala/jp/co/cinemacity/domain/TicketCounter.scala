@@ -4,10 +4,10 @@ package jp.co.cinemacity.domain
  チケットカウンター。
  顧客が求めるチケットを、最も安い価格で案内し、販売する。
  */
-class TicketCounter(vendor: TicketVendor, concierge: TicketConcierge) {
+class TicketCounter(vendor: TicketVendor) {
   def sell(customer: Customer, show: Showing): Ticket = {
-    val ticketTypes = concierge.validate(customer)
-    val discounts = concierge.proposeDiscountsTo(customer)
+    val ticketTypes = customer.availableTicketTypes
+    val discounts = customer.discounts
 
     val tickets = ticketTypes.map(vendor.issue(show, _))
 
