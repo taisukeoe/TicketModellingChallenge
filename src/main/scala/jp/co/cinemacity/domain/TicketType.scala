@@ -4,7 +4,7 @@ package jp.co.cinemacity.domain
   チケット。
   上映会、チケット種別、そして割引なしの定価。
  */
-case class Ticket(show: Show, typ: TicketType, price: Price)
+case class Ticket(show: Showing, typ: TicketType, price: Price)
 
 
 /*

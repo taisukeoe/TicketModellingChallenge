@@ -5,7 +5,7 @@ package jp.co.cinemacity.domain
  顧客が求めるチケットを、最も安い価格で案内し、販売する。
  */
 class TicketCounter(vendor: TicketVendor, concierge: TicketConcierge) {
-  def sell(customer: Customer, show: Show): Ticket = {
+  def sell(customer: Customer, show: Showing): Ticket = {
     val ticketTypes = concierge.validate(customer)
     val discounts = concierge.proposeDiscountsTo(customer)
 

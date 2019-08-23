@@ -5,11 +5,11 @@ package jp.co.cinemacity.domain
   上映回を選んでチケット種別を選ぶと、チケット価格が決まる。
  */
 trait TicketVendor {
-  def issue(show: Show, ticketType: TicketType): Ticket
+  def issue(show: Showing, ticketType: TicketType): Ticket
 }
 
 object CinemaCityTicketVendor extends TicketVendor {
-  def issue(show: Show, ticketType: TicketType): Ticket =
+  def issue(show: Showing, ticketType: TicketType): Ticket =
     Ticket(show, ticketType, ticketPricingOf(show).flatMap(_.apply(show.time).lift(ticketType)).min)
 
   private def ticketPricingAt(dateType: DateType): Set[TicketPricing] = dateType match {
@@ -21,7 +21,7 @@ object CinemaCityTicketVendor extends TicketVendor {
   /*
    特別上映が固定額ではなく、特別なチケット価格表だったとしたら `ticketPricingOf` メソッドを拡張する。
   */
-  private def ticketPricingOf(show: Show): Set[TicketPricing] = {
+  private def ticketPricingOf(show: Showing): Set[TicketPricing] = {
     def always(price: Price): TicketPricing = _ => {
       case _ => price
     }

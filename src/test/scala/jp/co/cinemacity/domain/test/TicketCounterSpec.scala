@@ -24,7 +24,7 @@ class TicketCounterSpec extends FlatSpec {
 
     assert(ticketTypes.contains(TicketType.DisabledStudent))
 
-    val show = Show(ShowId(11L), movie, ShowType.Standard, LocalDateTime.of(2019, 7, 2, 10, 0))
+    val show = Showing(ShowId(11L), movie, ShowType.Standard, LocalDateTime.of(2019, 7, 2, 10, 0))
 
     val tickets = ticketTypes.map(vendor.issue(show, _))
 
@@ -46,7 +46,7 @@ class TicketCounterSpec extends FlatSpec {
 
     assert(ticketTypes.contains(TicketType.CinemaCitizen))
 
-    val show = Show(ShowId(11L), movie, ShowType.Standard, LocalDateTime.of(2019, 7, 1, 10, 0))
+    val show = Showing(ShowId(11L), movie, ShowType.Standard, LocalDateTime.of(2019, 7, 1, 10, 0))
 
     val tickets = ticketTypes.map(vendor.issue(show, _))
 
@@ -66,7 +66,7 @@ class TicketCounterSpec extends FlatSpec {
 
     assert(ticketTypes.contains(TicketType.CinemaCitizen))
 
-    val show = Show(ShowId(11L), movie, ShowType.ThreeD, LocalDateTime.of(2019, 7, 6, 23, 0))
+    val show = Showing(ShowId(11L), movie, ShowType.ThreeD, LocalDateTime.of(2019, 7, 6, 23, 0))
 
     val tickets = ticketTypes.map(vendor.issue(show, _))
 
