@@ -42,13 +42,15 @@ object ShowType {
 
 sealed trait DateType
 
+sealed trait DayOfWeekType extends DateType
+
 object DateType {
 
-  case class MovieDay(dateType: DateType) extends DateType
+  case class MovieDay(dayOfWeekType: DayOfWeekType) extends DateType
 
-  case object Holiday extends DateType
+  case object Holiday extends DayOfWeekType
 
-  case object Weekday extends DateType
+  case object Weekday extends DayOfWeekType
 
 }
 

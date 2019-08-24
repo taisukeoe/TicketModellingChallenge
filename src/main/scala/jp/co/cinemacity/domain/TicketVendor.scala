@@ -13,7 +13,8 @@ object CinemaCityTicketVendor extends TicketVendor {
     Ticket(show, ticketType, ticketPricingOf(show).flatMap(_.apply(show.time).lift(ticketType)).min)
 
   private def ticketPricingAt(dateType: DateType): Set[TicketPricing] = dateType match {
-    case DateType.MovieDay(dt) => ticketPricingAt(dt) + MoviedayPricing
+    case DateType.MovieDay(DateType.Weekday) => Set(WeekdayPricing, MoviedayPricing)
+    case DateType.MovieDay(DateType.Holiday) => Set(HolidayPricing, MoviedayPricing)
     case DateType.Weekday => Set(WeekdayPricing)
     case DateType.Holiday => Set(HolidayPricing)
   }
